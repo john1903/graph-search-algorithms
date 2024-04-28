@@ -1,8 +1,8 @@
 module me.jangluzniewicz.graphsearchalgorithms {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.apache.commons.lang3;
 
-
-    opens me.jangluzniewicz.graphsearchalgorithms to javafx.fxml;
-    exports me.jangluzniewicz.graphsearchalgorithms;
+    exports me.jangluzniewicz.graphsearchalgorithms.gui;
+    opens me.jangluzniewicz.graphsearchalgorithms.gui to javafx.fxml;
 }
