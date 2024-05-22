@@ -26,11 +26,7 @@ public class SolverDFS implements BoardSolverInterface {
             while (!stack.isEmpty()) {
                 Node currentNode = stack.pop();
                 Board currentBoard = currentNode.getState();
-                long MAX_COMPUTATION_TIME = 90000000000L;
                 maxRecursionDepth = Math.max(maxRecursionDepth, currentNode.getDepth());
-                if (System.nanoTime() - startTime > MAX_COMPUTATION_TIME) {
-                    break;
-                }
                 if (currentBoard.isBoardSolved()) {
                     computationTime = System.nanoTime() - startTime;
                     solutionLength = currentNode.getPath().size();

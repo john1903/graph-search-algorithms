@@ -24,17 +24,13 @@ public class SolverASTR implements BoardSolverInterface {
         try {
             while (!openList.isEmpty()) {
                 Node currentNode = openList.poll();
-                long MAX_COMPUTATION_TIME = 90000000000L;
                 maxRecursionDepth = Math.max(maxRecursionDepth, currentNode.getDepth());
-                if (System.nanoTime() - startTime > MAX_COMPUTATION_TIME) {
-                    break;
-                }
+                processedStates++;
                 if (currentNode.getState().isBoardSolved()) {
                     computationTime = System.nanoTime() - startTime;
                     solutionLength = currentNode.getPath().size();
                     return currentNode.getPath();
                 }
-                processedStates++;
                 List<Node> children = currentNode.getChildren();
                 for (Node child : children) {
                     if (!openList.contains(child)){
@@ -46,7 +42,7 @@ public class SolverASTR implements BoardSolverInterface {
                         } else {
                             throw new IllegalArgumentException("Invalid parameter");
                         }
-                        child.setTotalCost(child.getTotalCost() + error);
+                        child.setTotalCost(child.getDepth() + error);
                         openList.add(child);
                         visitedStates++;
                     }
@@ -81,6 +77,9 @@ public class SolverASTR implements BoardSolverInterface {
         int hammError = 0;
         for (int i = 0; i < currentBoard.getRows(); i++) {
             for (int j = 0; j < currentBoard.getColumns(); j++) {
+                if (currentBoard.getFieldValue(i, j) == 0) {
+                    continue;
+                }
                 if (currentBoard.getFieldValue(i, j) != solvedBoard.getFieldValue(i, j)) {
                     hammError++;
                 }

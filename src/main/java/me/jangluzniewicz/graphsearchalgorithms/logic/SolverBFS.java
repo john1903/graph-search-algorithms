@@ -25,17 +25,13 @@ public class SolverBFS implements BoardSolverInterface {
             while (!queue.isEmpty()) {
                 Node currentNode = queue.poll();
                 Board currentBoard = currentNode.getState();
-                long MAX_COMPUTATION_TIME = 90000000000L;
                 maxRecursionDepth = Math.max(maxRecursionDepth, currentNode.getDepth());
-                if (System.nanoTime() - startTime > MAX_COMPUTATION_TIME) {
-                    break;
-                }
+                processedStates++;
                 if (currentBoard.isBoardSolved()) {
                     computationTime = System.nanoTime() - startTime;
                     solutionLength = currentNode.getPath().size();
                     return currentNode.getPath();
                 }
-                processedStates++;
                 List<Node> children = currentNode.getChildren();
                 sortChildren(children, parameter);
                 for (Node child : children) {
