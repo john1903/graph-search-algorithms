@@ -77,11 +77,10 @@ public class SolverASTR implements BoardSolverInterface {
         int hammError = 0;
         for (int i = 0; i < currentBoard.getRows(); i++) {
             for (int j = 0; j < currentBoard.getColumns(); j++) {
-                if (currentBoard.getFieldValue(i, j) == 0) {
-                    continue;
-                }
-                if (currentBoard.getFieldValue(i, j) != solvedBoard.getFieldValue(i, j)) {
-                    hammError++;
+                if (currentBoard.getFieldValue(i, j) != 0) {
+                    if (currentBoard.getFieldValue(i, j) != solvedBoard.getFieldValue(i, j)) {
+                        hammError++;
+                    }
                 }
             }
         }
