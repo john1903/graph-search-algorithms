@@ -15,10 +15,15 @@
 }
 
 .grid-pane {
-    -fx-padding: 10px;
+    -fx-padding: 0;
     -fx-background-color: #fafafa;
     -fx-border-color: #bbbbbb;
     -fx-border-width: 1px;
+}
+
+.hbox {
+    -fx-padding: 0;
+    -fx-spacing: 0;
 }
 
 .grid-cell {

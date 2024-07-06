@@ -16,99 +16,96 @@
 
 <VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21">
     <AnchorPane prefHeight="40.0" prefWidth="640.0" VBox.vgrow="NEVER">
-        <Text layoutX="182.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-title"
-              text="15 Puzzle Solver Algorithms" textAlignment="CENTER">
+        <Text layoutX="182.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-title" text="15 Puzzle Solver Algorithms" textAlignment="CENTER">
             <font>
-                <Font size="24.0"/>
+                <Font size="24.0" />
             </font>
         </Text>
     </AnchorPane>
-    <Line endX="640.0" styleClass="custom-line"/>
+    <Line endX="640.0" styleClass="custom-line" />
     <AnchorPane VBox.vgrow="ALWAYS">
-        <HBox layoutY="8.0" prefHeight="335.0" prefWidth="640.0" spacing="20.0">
+        <HBox prefHeight="335.0" prefWidth="640.0" styleClass="hbox">
             <AnchorPane prefHeight="350.0" prefWidth="320.0">
-                <GridPane layoutX="24.0" layoutY="43.0" prefHeight="250.0" prefWidth="250.0"
-                          styleClass="grid-pane">
+                <GridPane layoutX="35.0" layoutY="56.0" prefHeight="250.0" prefWidth="250.0" styleClass="grid-pane">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="62.5"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="62.5"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="62.5"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="62.5"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="62.5" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="62.5" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="62.5" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="62.5" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Text text="1"/>
+                        <Text text="1" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Text text="2"/>
+                        <Text text="2" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="2" GridPane.rowIndex="0">
-                        <Text text="3"/>
+                        <Text text="3" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="3" GridPane.rowIndex="0">
-                        <Text text="4"/>
+                        <Text text="4" />
                     </StackPane>
 
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Text text="5"/>
+                        <Text text="5" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Text text="6"/>
+                        <Text text="6" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                        <Text text="7"/>
+                        <Text text="7" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                        <Text text="8"/>
+                        <Text text="8" />
                     </StackPane>
 
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Text text="9"/>
+                        <Text text="9" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Text text="10"/>
+                        <Text text="10" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                        <Text text="11"/>
+                        <Text text="11" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                        <Text text="12"/>
+                        <Text text="12" />
                     </StackPane>
 
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                        <Text text="13"/>
+                        <Text text="13" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                        <Text text="14"/>
+                        <Text text="14" />
                     </StackPane>
                     <StackPane styleClass="grid-cell" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                        <Text text="15"/>
+                        <Text text="15" />
                     </StackPane>
-                    <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3"
-                               GridPane.rowIndex="3"/> <!-- Empty cell for the puzzle -->
+                    <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                 </GridPane>
             </AnchorPane>
-            <Line endY="350.0" styleClass="custom-line"/>
+            <Line endY="360.0" styleClass="custom-line" />
             <VBox alignment="CENTER" prefHeight="350.0" prefWidth="320.0" spacing="20.0">
-                <Button prefHeight="35.0" prefWidth="150.0" styleClass="button" text="Play"/>
-                <Button prefHeight="35.0" prefWidth="150.0" styleClass="button" text="Generate"/>
+                <Button prefHeight="35.0" prefWidth="150.0" styleClass="button" text="Play" />
+                <Button prefHeight="35.0" prefWidth="150.0" styleClass="button" text="Generate" />
                 <MenuButton prefHeight="35.0" prefWidth="150.0" styleClass="menu-button" text="Solver">
                     <items>
-                        <MenuItem text="BFS"/>
-                        <MenuItem text="DFS"/>
-                        <MenuItem text="A-star"/>
+                        <MenuItem text="BFS" />
+                        <MenuItem text="DFS" />
+                        <MenuItem text="A-star" />
                     </items>
                 </MenuButton>
                 <MenuButton prefHeight="35.0" prefWidth="150.0" styleClass="menu-button" text="Parameter">
                     <items>
-                        <MenuItem text="Option A"/>
-                        <MenuItem text="Option B"/>
-                        <MenuItem text="Option C"/>
+                        <MenuItem text="Option A" />
+                        <MenuItem text="Option B" />
+                        <MenuItem text="Option C" />
                     </items>
                 </MenuButton>
             </VBox>
