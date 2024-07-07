@@ -1,24 +1,46 @@
 package me.jangluzniewicz.graphsearchalgorithms.gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import me.jangluzniewicz.graphsearchalgorithms.data.BoardGenerator;
-import me.jangluzniewicz.graphsearchalgorithms.logic.BoardFactory;
+import me.jangluzniewicz.graphsearchalgorithms.logic.*;
 import me.jangluzniewicz.graphsearchalgorithms.model.Board;
+import me.jangluzniewicz.graphsearchalgorithms.model.Node;
+
+import java.util.List;
 
 public class MainController {
     private BoardWrapper boardWrapper;
-
     @FXML
     private GridPane gridPane;
+    @FXML
+    private ComboBox<String> algorithmComboBox;
+    @FXML
+    private ComboBox<String> heuristicComboBox;
 
     @FXML
     public void initialize() {
         Board board = BoardFactory.getSolvedBoard(4, 4);
         boardWrapper = new BoardWrapper(board);
         bindGridToBoard();
+        algorithmComboBox.getItems().addAll("BFS", "DFS", "A-star");
+        heuristicComboBox.setDisable(true);
+        algorithmComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                if (newValue.equals("BFS") || newValue.equals("DFS")) {
+                    heuristicComboBox.getItems().setAll("RDLU", "DRUL", "DRLU", "LUDR", "LURD", "ULDR", "ULRD");
+                } else if (newValue.equals("A-star")) {
+                    heuristicComboBox.getItems().setAll("MANH", "HAMM");
+                }
+                heuristicComboBox.setDisable(false);
+            } else {
+                heuristicComboBox.getItems().clear();
+                heuristicComboBox.setDisable(true);
+            }
+        });
     }
 
     @FXML
@@ -29,6 +51,32 @@ public class MainController {
                 boardWrapper.tileProperty(i, j).set(board.getFieldValue(i, j));
             }
         }
+    }
+
+    @FXML
+    public void solveBoard() {
+        String selectedAlgorithm = algorithmComboBox.getSelectionModel().getSelectedItem();
+        List<Character> result = getResult(selectedAlgorithm);
+        System.out.println(result);
+        if (result != null) {
+
+        }
+    }
+
+    private List<Character> getResult(String selectedAlgorithm) {
+        String selectedHeuristic = heuristicComboBox.getSelectionModel().getSelectedItem();
+        BoardSolverInterface boardSolver = switch (selectedAlgorithm) {
+            case "BFS" -> new SolverBFS();
+            case "DFS" -> new SolverDFS();
+            case "A-star" -> new SolverASTR();
+            default -> null;
+        };
+        List<Character> result = null;
+        if (boardSolver != null) {
+            Node root = new Node(boardWrapper.getBoard(), null, 'N', null);
+            result = boardSolver.solve(root, selectedHeuristic);
+        }
+        return result;
     }
 
     private void bindGridToBoard() {
