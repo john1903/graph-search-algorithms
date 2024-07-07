@@ -3,6 +3,8 @@ package me.jangluzniewicz.graphsearchalgorithms.gui;
 import javafx.animation.PauseTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -23,6 +25,8 @@ public class MainController {
     private ComboBox<String> algorithmComboBox;
     @FXML
     private ComboBox<String> heuristicComboBox;
+    @FXML
+    private Button playButton;
 
     @FXML
     public void initialize() {
@@ -30,6 +34,12 @@ public class MainController {
         boardWrapper = new BoardWrapper(board);
         bindGridToBoard();
         algorithmComboBox.getItems().addAll("BFS", "DFS", "A-star");
+
+        playButton.disableProperty().bind(
+                algorithmComboBox.valueProperty().isNull()
+                        .or(heuristicComboBox.valueProperty().isNull())
+        );
+
         heuristicComboBox.setDisable(true);
         algorithmComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -61,21 +71,33 @@ public class MainController {
         String selectedAlgorithm = algorithmComboBox.getSelectionModel().getSelectedItem();
         List<Character> result = getResult(selectedAlgorithm);
 
-        if (result != null) {
-            gridPane.setDisable(true);
-            PauseTransition pause = new PauseTransition(Duration.seconds(0.8));
-            pause.setOnFinished(event -> {
-                if (!result.isEmpty()) {
-                    Character move = result.removeFirst();
-                    boardWrapper.moveTile(boardWrapper.getBoard().getEmptyPosition().get(0),
-                            boardWrapper.getBoard().getEmptyPosition().get(1), move);
-                    pause.playFromStart();
-                } else {
-                    gridPane.setDisable(false);
-                }
-            });
-            pause.play();
+        if (result == null || result.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Solution Not Found");
+            alert.setHeaderText(null);
+            alert.setContentText("Solution not found for the selected algorithm and heuristic.");
+            alert.showAndWait();
+            return;
         }
+
+        gridPane.setDisable(true);
+        PauseTransition pause = getTransition(result);
+        pause.play();
+    }
+
+    private PauseTransition getTransition(List<Character> result) {
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.8));
+        pause.setOnFinished(event -> {
+            if (!result.isEmpty()) {
+                Character move = result.removeFirst();
+                boardWrapper.moveTile(boardWrapper.getBoard().getEmptyPosition().get(0),
+                        boardWrapper.getBoard().getEmptyPosition().get(1), move);
+                pause.playFromStart();
+            } else {
+                gridPane.setDisable(false);
+            }
+        });
+        return pause;
     }
 
 
@@ -121,5 +143,4 @@ public class MainController {
             }
         }
     }
-
 }

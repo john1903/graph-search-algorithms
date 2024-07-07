@@ -42,7 +42,7 @@
             </AnchorPane>
             <Line endY="360.0" styleClass="custom-line" />
             <VBox alignment="CENTER" prefHeight="350.0" prefWidth="320.0" spacing="20.0">
-                <Button onAction="#solveBoard" prefHeight="35.0" prefWidth="150.0" styleClass="button" text="Play" />
+                <Button fx:id="playButton" onAction="#solveBoard" prefHeight="35.0" prefWidth="150.0" styleClass="button" text="Play" />
                 <Button onAction="#generateBoard" prefHeight="35.0" prefWidth="150.0" styleClass="button" text="Generate" />
                 <ComboBox fx:id="algorithmComboBox" prefHeight="35.0" prefWidth="150.0" styleClass="menu">
                     <items>
