@@ -1,10 +1,13 @@
 package me.jangluzniewicz.graphsearchalgorithms.gui;
 
+import javafx.animation.PauseTransition;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import me.jangluzniewicz.graphsearchalgorithms.data.BoardGenerator;
 import me.jangluzniewicz.graphsearchalgorithms.logic.*;
 import me.jangluzniewicz.graphsearchalgorithms.model.Board;
@@ -57,11 +60,24 @@ public class MainController {
     public void solveBoard() {
         String selectedAlgorithm = algorithmComboBox.getSelectionModel().getSelectedItem();
         List<Character> result = getResult(selectedAlgorithm);
-        System.out.println(result);
-        if (result != null) {
 
+        if (result != null) {
+            gridPane.setDisable(true);
+            PauseTransition pause = new PauseTransition(Duration.seconds(0.8));
+            pause.setOnFinished(event -> {
+                if (!result.isEmpty()) {
+                    Character move = result.removeFirst();
+                    boardWrapper.moveTile(boardWrapper.getBoard().getEmptyPosition().get(0),
+                            boardWrapper.getBoard().getEmptyPosition().get(1), move);
+                    pause.playFromStart();
+                } else {
+                    gridPane.setDisable(false);
+                }
+            });
+            pause.play();
         }
     }
+
 
     private List<Character> getResult(String selectedAlgorithm) {
         String selectedHeuristic = heuristicComboBox.getSelectionModel().getSelectedItem();
@@ -87,13 +103,23 @@ public class MainController {
             for (int col = 0; col < columns; col++) {
                 Text text = new Text();
                 text.getStyleClass().add("grid-cell");
-                text.textProperty().bind(boardWrapper.tileProperty(row, col).asString());
+
+                text.textProperty().bind(
+                        Bindings.when(boardWrapper.tileProperty(row, col).isEqualTo(0))
+                                .then("")
+                                .otherwise(boardWrapper.tileProperty(row, col).asString())
+                );
 
                 StackPane stackPane = new StackPane(text);
                 stackPane.getStyleClass().add("grid-cell");
+
+                stackPane.styleProperty().bind(Bindings.when(boardWrapper.tileProperty(row, col).isEqualTo(0))
+                        .then("-fx-background-color: lightgreen;")
+                        .otherwise("-fx-background-color: white;"));
 
                 gridPane.add(stackPane, col, row);
             }
         }
     }
+
 }

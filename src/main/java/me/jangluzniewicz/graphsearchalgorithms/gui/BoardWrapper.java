@@ -27,6 +27,19 @@ public class BoardWrapper {
         return tileProperties[row][col];
     }
 
+    public void moveTile(int row, int column, char direction) {
+        board.move(row, column, direction);
+        updateProperties();
+    }
+
+    private void updateProperties() {
+        for (int i = 0; i < board.getRows(); i++) {
+            for (int j = 0; j < board.getColumns(); j++) {
+                tileProperties[i][j].set(board.getFieldValue(i, j));
+            }
+        }
+    }
+
     public int getRows() {
         return board.getRows();
     }
