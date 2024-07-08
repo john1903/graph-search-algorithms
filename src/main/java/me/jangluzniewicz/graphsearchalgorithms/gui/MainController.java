@@ -27,6 +27,8 @@ public class MainController {
     private ComboBox<String> heuristicComboBox;
     @FXML
     private Button playButton;
+    @FXML
+    private Button generateButton;
 
     @FXML
     public void initialize() {
@@ -80,6 +82,7 @@ public class MainController {
             return;
         }
 
+        setButtonsDisabled(true);
         gridPane.setDisable(true);
         PauseTransition pause = getTransition(result);
         pause.play();
@@ -94,12 +97,20 @@ public class MainController {
                         boardWrapper.getBoard().getEmptyPosition().get(1), move);
                 pause.playFromStart();
             } else {
+                setButtonsDisabled(false);
                 gridPane.setDisable(false);
             }
         });
         return pause;
     }
 
+    private void setButtonsDisabled(boolean disabled) {
+        playButton.disableProperty().unbind();
+        generateButton.disableProperty().unbind();
+
+        playButton.setDisable(disabled);
+        generateButton.setDisable(disabled);
+    }
 
     private List<Character> getResult(String selectedAlgorithm) {
         String selectedHeuristic = heuristicComboBox.getSelectionModel().getSelectedItem();
@@ -135,9 +146,16 @@ public class MainController {
                 StackPane stackPane = new StackPane(text);
                 stackPane.getStyleClass().add("grid-cell");
 
-                stackPane.styleProperty().bind(Bindings.when(boardWrapper.tileProperty(row, col).isEqualTo(0))
-                        .then("-fx-background-color: lightgreen;")
-                        .otherwise("-fx-background-color: white;"));
+                stackPane.styleProperty().bind(
+                        Bindings.when(boardWrapper.tileProperty(row, col).isEqualTo(0))
+                                .then("-fx-background-color: lightgreen;")
+                                .otherwise(
+                                        Bindings.when(
+                                                        boardWrapper.tileProperty(row, col).isEqualTo(row * columns + col + 1)
+                                                ).then("-fx-background-color: transparent;")
+                                                .otherwise("-fx-background-color: lightcoral;")
+                                )
+                );
 
                 gridPane.add(stackPane, col, row);
             }
