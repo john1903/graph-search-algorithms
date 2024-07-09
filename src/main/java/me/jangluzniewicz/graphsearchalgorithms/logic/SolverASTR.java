@@ -100,9 +100,9 @@ public class SolverASTR implements BoardSolverInterface {
 
     @Override
     public String getStats() {
-        DecimalFormat decimalFormat = new DecimalFormat("#.###");
-        return solutionLength + "\n" + visitedStates + "\n"
-                + processedStates + "\n" + maxRecursionDepth + "\n" +
-                decimalFormat.format((double)computationTime / 1_000_000_000.0);
+        DecimalFormat decimalFormat = new DecimalFormat("#.#####");
+        return "Solution length: " + solutionLength + "\n" + "Visited states: " + visitedStates + "\n"
+                + "Processed states: " + processedStates + "\n" + "Max recursion depth: " + maxRecursionDepth + "\n"
+                + "Computation time (ms): " + decimalFormat.format((double)computationTime / 1_000_000_000.0);
     }
 }

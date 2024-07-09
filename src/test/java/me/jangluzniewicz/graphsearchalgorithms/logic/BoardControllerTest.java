@@ -11,17 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardControllerTest {
     Board board;
-    BoardFactory boardFactory;
 
     @BeforeEach
     void setUp() {
-        boardFactory = new BoardFactory();
         ArrayList<Field> fieldsArray = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
             fieldsArray.add(new Field(i));
         }
         fieldsArray.add(new Field(0));
-        board = boardFactory.getBoard(fieldsArray);
+        board = BoardFactory.getBoard(fieldsArray);
     }
 
     @Test

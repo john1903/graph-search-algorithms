@@ -1,6 +1,7 @@
 package me.jangluzniewicz.graphsearchalgorithms.gui;
 
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import me.jangluzniewicz.graphsearchalgorithms.data.BoardGenerator;
 import me.jangluzniewicz.graphsearchalgorithms.logic.*;
 import me.jangluzniewicz.graphsearchalgorithms.model.Board;
 import me.jangluzniewicz.graphsearchalgorithms.model.Node;
@@ -40,6 +40,7 @@ public class MainController {
         playButton.disableProperty().bind(
                 algorithmComboBox.valueProperty().isNull()
                         .or(heuristicComboBox.valueProperty().isNull())
+                        .or(boardWrapper.isBoardSolvedProperty())
         );
 
         heuristicComboBox.setDisable(true);
@@ -60,35 +61,37 @@ public class MainController {
 
     @FXML
     public void generateBoard() {
-        Board board = new BoardGenerator().getSolvableBoard(4, 4, 7);
+        Board board = BoardFactory.getSolvableBoard(4, 4, 7);
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getColumns(); j++) {
                 boardWrapper.tileProperty(i, j).set(board.getFieldValue(i, j));
             }
         }
+        boardWrapper.isBoardSolvedProperty().set(board.isBoardSolved());
     }
 
     @FXML
     public void solveBoard() {
         String selectedAlgorithm = algorithmComboBox.getSelectionModel().getSelectedItem();
-        List<Character> result = getResult(selectedAlgorithm);
-
+        BoardSolverInterface boardSolver = switch (selectedAlgorithm) {
+            case "BFS" -> new SolverBFS();
+            case "DFS" -> new SolverDFS();
+            case "A-star" -> new SolverASTR();
+            default -> null;
+        };
+        List<Character> result = getResult(boardSolver);
         if (result == null || result.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Solution Not Found");
-            alert.setHeaderText(null);
-            alert.setContentText("Solution not found for the selected algorithm and heuristic.");
-            alert.showAndWait();
+            showAlertDialog("Solution Not Found", null,
+                    "Solution not found for the selected algorithm and heuristic.");
             return;
         }
-
         setButtonsDisabled(true);
         gridPane.setDisable(true);
-        PauseTransition pause = getTransition(result);
+        PauseTransition pause = getTransition(result, boardSolver);
         pause.play();
     }
 
-    private PauseTransition getTransition(List<Character> result) {
+    private PauseTransition getTransition(List<Character> result, BoardSolverInterface boardSolver) {
         PauseTransition pause = new PauseTransition(Duration.seconds(0.8));
         pause.setOnFinished(event -> {
             if (!result.isEmpty()) {
@@ -99,27 +102,36 @@ public class MainController {
             } else {
                 setButtonsDisabled(false);
                 gridPane.setDisable(false);
+                playButton.disableProperty().bind(
+                        algorithmComboBox.valueProperty().isNull()
+                                .or(heuristicComboBox.valueProperty().isNull())
+                                .or(boardWrapper.isBoardSolvedProperty())
+                );
+                if (boardSolver != null) {
+                    Platform.runLater(() ->
+                            showAlertDialog("Solution Found", "Statistics:", boardSolver.getStats()));
+                }
             }
         });
         return pause;
     }
 
+    private void showAlertDialog(String title, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
     private void setButtonsDisabled(boolean disabled) {
         playButton.disableProperty().unbind();
-        generateButton.disableProperty().unbind();
-
         playButton.setDisable(disabled);
         generateButton.setDisable(disabled);
     }
 
-    private List<Character> getResult(String selectedAlgorithm) {
+    private List<Character> getResult(BoardSolverInterface boardSolver) {
         String selectedHeuristic = heuristicComboBox.getSelectionModel().getSelectedItem();
-        BoardSolverInterface boardSolver = switch (selectedAlgorithm) {
-            case "BFS" -> new SolverBFS();
-            case "DFS" -> new SolverDFS();
-            case "A-star" -> new SolverASTR();
-            default -> null;
-        };
         List<Character> result = null;
         if (boardSolver != null) {
             Node root = new Node(boardWrapper.getBoard(), null, 'N', null);

@@ -1,7 +1,6 @@
 package me.jangluzniewicz.graphsearchalgorithms.model;
 
 import me.jangluzniewicz.graphsearchalgorithms.logic.BoardController;
-import me.jangluzniewicz.graphsearchalgorithms.logic.BoardFactory;
 import me.jangluzniewicz.graphsearchalgorithms.logic.BoardValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,11 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NodeTest {
     Board state;
-    BoardFactory boardFactory;
 
     @BeforeEach
     void setUp() {
-        boardFactory = new BoardFactory();
         ArrayList<Field> fieldsArray = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
             fieldsArray.add(new Field(i));

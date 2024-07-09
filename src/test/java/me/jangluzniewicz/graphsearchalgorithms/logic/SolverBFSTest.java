@@ -18,7 +18,6 @@ class SolverBFSTest {
 
     @BeforeEach
     void setUp() {
-        BoardFactory boardFactory = new BoardFactory();
         ArrayList<Field> fieldsArray = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
             fieldsArray.add(new Field(i));
@@ -34,9 +33,9 @@ class SolverBFSTest {
             fieldsArray4_3.add(new Field(i));
         }
         fieldsArray4_3.add(new Field(0));
-        board = boardFactory.getBoard(fieldsArray);
-        board3_4 = boardFactory.getBoard(3, 4, fieldsArray3_4);
-        board4_3 = boardFactory.getBoard(4, 3, fieldsArray4_3);
+        board = BoardFactory.getBoard(fieldsArray);
+        board3_4 = BoardFactory.getBoard(3, 4, fieldsArray3_4);
+        board4_3 = BoardFactory.getBoard(4, 3, fieldsArray4_3);
     }
 
     @Test
