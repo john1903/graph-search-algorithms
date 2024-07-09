@@ -37,31 +37,35 @@ public class MainController {
         Board board = BoardFactory.getSolvedBoard(4, 4);
         boardWrapper = new BoardWrapper(board);
         bindGridToBoard();
-        depthComboBox.getItems().addAll("7", "12", "15", "18", "20");
         algorithmComboBox.getItems().addAll("BFS", "DFS", "A-star");
-
         generateButton.disableProperty().bind(
                 depthComboBox.valueProperty().isNull()
         );
-
+        depthComboBox.disableProperty().bind(
+                algorithmComboBox.valueProperty().isNull()
+        );
         playButton.disableProperty().bind(
                 algorithmComboBox.valueProperty().isNull()
                         .or(heuristicComboBox.valueProperty().isNull())
                         .or(boardWrapper.isBoardSolvedProperty())
         );
-
-        heuristicComboBox.setDisable(true);
+        heuristicComboBox.disableProperty().bind(
+                algorithmComboBox.valueProperty().isNull()
+        );
         algorithmComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                if (newValue.equals("DFS")) {
+                    depthComboBox.getItems().setAll("7");
+                    depthComboBox.getSelectionModel().selectFirst();
+                } else {
+                    depthComboBox.getItems().setAll("7", "12", "15", "18");
+                }
+
                 if (newValue.equals("BFS") || newValue.equals("DFS")) {
                     heuristicComboBox.getItems().setAll("RDLU", "DRUL", "DRLU", "LUDR", "LURD", "ULDR", "ULRD");
                 } else if (newValue.equals("A-star")) {
                     heuristicComboBox.getItems().setAll("MANH", "HAMM");
                 }
-                heuristicComboBox.setDisable(false);
-            } else {
-                heuristicComboBox.getItems().clear();
-                heuristicComboBox.setDisable(true);
             }
         });
     }
