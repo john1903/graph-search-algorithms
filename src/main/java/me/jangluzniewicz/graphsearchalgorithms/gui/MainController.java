@@ -26,6 +26,8 @@ public class MainController {
     @FXML
     private ComboBox<String> heuristicComboBox;
     @FXML
+    private ComboBox<String> depthComboBox;
+    @FXML
     private Button playButton;
     @FXML
     private Button generateButton;
@@ -35,7 +37,12 @@ public class MainController {
         Board board = BoardFactory.getSolvedBoard(4, 4);
         boardWrapper = new BoardWrapper(board);
         bindGridToBoard();
+        depthComboBox.getItems().addAll("7", "12", "15", "18", "20");
         algorithmComboBox.getItems().addAll("BFS", "DFS", "A-star");
+
+        generateButton.disableProperty().bind(
+                depthComboBox.valueProperty().isNull()
+        );
 
         playButton.disableProperty().bind(
                 algorithmComboBox.valueProperty().isNull()
@@ -61,7 +68,8 @@ public class MainController {
 
     @FXML
     public void generateBoard() {
-        Board board = BoardFactory.getSolvableBoard(4, 4, 7);
+        int depth = Integer.parseInt(depthComboBox.getSelectionModel().getSelectedItem());
+        Board board = BoardFactory.getSolvableBoard(4, 4, depth);
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getColumns(); j++) {
                 boardWrapper.tileProperty(i, j).set(board.getFieldValue(i, j));
@@ -102,6 +110,9 @@ public class MainController {
             } else {
                 setButtonsDisabled(false);
                 gridPane.setDisable(false);
+                generateButton.disableProperty().bind(
+                        depthComboBox.valueProperty().isNull()
+                );
                 playButton.disableProperty().bind(
                         algorithmComboBox.valueProperty().isNull()
                                 .or(heuristicComboBox.valueProperty().isNull())
@@ -126,6 +137,7 @@ public class MainController {
 
     private void setButtonsDisabled(boolean disabled) {
         playButton.disableProperty().unbind();
+        generateButton.disableProperty().unbind();
         playButton.setDisable(disabled);
         generateButton.setDisable(disabled);
     }
