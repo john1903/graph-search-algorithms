@@ -30,10 +30,4 @@ public class BoardValidator implements BoardValidatorInterface {
         }
         return board.getFieldValue(rows - 1, columns - 1) == 0;
     }
-
-
-    @Override
-    public boolean isBoardSolvable(Board board) {
-        return false;
-    }
 }

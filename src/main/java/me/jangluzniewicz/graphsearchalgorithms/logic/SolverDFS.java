@@ -6,6 +6,9 @@ import me.jangluzniewicz.graphsearchalgorithms.model.Node;
 import java.text.DecimalFormat;
 import java.util.*;
 
+/**
+ * SolverDFS implements the Depth-First Search (DFS) algorithm with depth limit to solve board puzzles.
+ */
 public class SolverDFS implements BoardSolverInterface {
     private static final int MAX_DEPTH = 30;
     private int solutionLength;
@@ -14,6 +17,13 @@ public class SolverDFS implements BoardSolverInterface {
     private int maxRecursionDepth;
     private long computationTime;
 
+    /**
+     * Solves the board puzzle using the Depth-First Search (DFS) algorithm with a depth limit.
+     *
+     * @param root      The root node representing the initial state of the board.
+     * @param parameter A parameter that could influence the solving process.
+     * @return A list of characters representing the sequence of moves to solve the puzzle.
+     */
     @Override
     public List<Character> solve(Node root, String parameter) {
         Deque<Node> stack = new ArrayDeque<>();
@@ -55,6 +65,12 @@ public class SolverDFS implements BoardSolverInterface {
         return Collections.emptyList();
     }
 
+    /**
+     * Sorts the list of child nodes based on a specific order.
+     *
+     * @param children   The list of child nodes to be sorted.
+     * @param moveOrder  The order in which to sort the child nodes.
+     */
     private void sortChildren(List<Node> children, String moveOrder) {
         children.sort((node1, node2) -> {
             int index1 = moveOrder.indexOf(node1.getLastMove());
@@ -64,10 +80,19 @@ public class SolverDFS implements BoardSolverInterface {
         Collections.reverse(children);
     }
 
+    /**
+     * Retrieves statistics about the solving process.
+     *
+     * @return A string containing statistics such as solution length, visited states, processed states,
+     *         max recursion depth, and computation time.
+     */
     public String getStats() {
         DecimalFormat decimalFormat = new DecimalFormat("#.###");
-        return "Solution length: " + solutionLength + "\n" + "Visited states: " + visitedStates + "\n"
-                + "Processed states: " + processedStates + "\n" + "Max recursion depth: " + maxRecursionDepth + "\n"
-                + "Computation time (ms): " + decimalFormat.format((double)computationTime / 1_000_000_000.0);
+        return "Solution length: " + solutionLength + "\n" +
+                "Visited states: " + visitedStates + "\n" +
+                "Processed states: " + processedStates + "\n" +
+                "Max recursion depth: " + maxRecursionDepth + "\n" +
+                "Computation time (ms): " + decimalFormat.format((double) computationTime / 1_000_000_000.0);
     }
 }
+

@@ -6,6 +6,9 @@ import me.jangluzniewicz.graphsearchalgorithms.model.Node;
 import java.text.DecimalFormat;
 import java.util.*;
 
+/**
+ * A* Search algorithm implementation for solving board puzzles.
+ */
 public class SolverASTR implements BoardSolverInterface {
     private Board solvedBoard;
     private int solutionLength;
@@ -14,6 +17,14 @@ public class SolverASTR implements BoardSolverInterface {
     private int maxRecursionDepth;
     private long computationTime;
 
+    /**
+     * Solves the board puzzle using the A* search algorithm.
+     *
+     * @param root      The root node representing the initial state of the board.
+     * @param parameter A parameter to customize the solving process ("MANH" for Manhattan distance,
+     *                  "HAMM" for Hamming distance).
+     * @return A list of characters representing the sequence of moves to solve the puzzle.
+     */
     @Override
     public List<Character> solve(Node root, String parameter) {
         solvedBoard = BoardFactory.getSolvedBoard(root.getState().getRows(), root.getState().getColumns());
@@ -33,7 +44,7 @@ public class SolverASTR implements BoardSolverInterface {
                 }
                 List<Node> children = currentNode.getChildren();
                 for (Node child : children) {
-                    if (!openList.contains(child)){
+                    if (!openList.contains(child)) {
                         int error;
                         if (parameter.equals("MANH")) {
                             error = calculateManhattanError(child.getState());
@@ -58,6 +69,12 @@ public class SolverASTR implements BoardSolverInterface {
         return Collections.emptyList();
     }
 
+    /**
+     * Calculates the Manhattan error (sum of distances) between the current board state and the solved board state.
+     *
+     * @param currentBoard The current board state.
+     * @return The Manhattan error.
+     */
     private int calculateManhattanError(Board currentBoard) {
         int manhError = 0;
         for (int i = 0; i < currentBoard.getRows(); i++) {
@@ -66,13 +83,19 @@ public class SolverASTR implements BoardSolverInterface {
                 if (value != 0) {
                     List<Integer> targetPosition = findPosition(solvedBoard, value);
                     assert targetPosition != null;
-                    manhError += Math.abs(i - targetPosition.getFirst()) + Math.abs(j - targetPosition.getLast());
+                    manhError += Math.abs(i - targetPosition.get(0)) + Math.abs(j - targetPosition.get(1));
                 }
             }
         }
         return manhError;
     }
 
+    /**
+     * Calculates the Hamming error (number of misplaced tiles) between the current board state and the solved board state.
+     *
+     * @param currentBoard The current board state.
+     * @return The Hamming error.
+     */
     private int calculateHammingError(Board currentBoard) {
         int hammError = 0;
         for (int i = 0; i < currentBoard.getRows(); i++) {
@@ -87,6 +110,13 @@ public class SolverASTR implements BoardSolverInterface {
         return hammError;
     }
 
+    /**
+     * Finds the position (row and column indices) of a specific value on the board.
+     *
+     * @param board The board to search.
+     * @param value The value to find.
+     * @return A list containing the row and column indices of the value, or null if not found.
+     */
     private List<Integer> findPosition(Board board, int value) {
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getColumns(); j++) {
@@ -98,11 +128,19 @@ public class SolverASTR implements BoardSolverInterface {
         return null;
     }
 
+    /**
+     * Retrieves statistics about the solving process.
+     *
+     * @return A string containing statistics such as solution length, visited states, processed states,
+     *         max recursion depth, and computation time.
+     */
     @Override
     public String getStats() {
         DecimalFormat decimalFormat = new DecimalFormat("#.#####");
-        return "Solution length: " + solutionLength + "\n" + "Visited states: " + visitedStates + "\n"
-                + "Processed states: " + processedStates + "\n" + "Max recursion depth: " + maxRecursionDepth + "\n"
-                + "Computation time (ms): " + decimalFormat.format((double)computationTime / 1_000_000_000.0);
+        return "Solution length: " + solutionLength + "\n" +
+                "Visited states: " + visitedStates + "\n" +
+                "Processed states: " + processedStates + "\n" +
+                "Max recursion depth: " + maxRecursionDepth + "\n" +
+                "Computation time (ms): " + decimalFormat.format((double)computationTime / 1_000_000_000.0);
     }
 }

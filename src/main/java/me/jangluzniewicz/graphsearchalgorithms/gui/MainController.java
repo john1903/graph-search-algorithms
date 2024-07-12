@@ -20,6 +20,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * MainController manages the interaction between the GUI elements and the puzzle-solving logic,
+ * facilitating board generation, solving, and displaying the solution process.
+ */
 public class MainController {
     private BoardWrapper boardWrapper;
     @FXML
@@ -35,6 +39,9 @@ public class MainController {
     @FXML
     private Button generateButton;
 
+    /**
+     * Initializes the controller, setting up the initial board state and binding UI elements.
+     */
     @FXML
     public void initialize() {
         Board board = BoardFactory.getSolvedBoard(4, 4);
@@ -44,6 +51,9 @@ public class MainController {
         bindUIElements();
     }
 
+    /**
+     * Binds various UI elements' properties to enable/disable them based on selection.
+     */
     private void bindUIElements() {
         generateButton.disableProperty().bind(
                 depthComboBox.valueProperty().isNull()
@@ -77,6 +87,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Generates a solvable board based on selected depth and updates the board display.
+     */
     @FXML
     public void generateBoard() {
         int depth = Integer.parseInt(depthComboBox.getSelectionModel().getSelectedItem());
@@ -89,6 +102,9 @@ public class MainController {
         boardWrapper.isBoardSolvedProperty().set(board.isBoardSolved());
     }
 
+    /**
+     * Initiates the board solving process using the selected algorithm and heuristic.
+     */
     @FXML
     public void solveBoard() {
         String selectedAlgorithm = algorithmComboBox.getSelectionModel().getSelectedItem();
@@ -108,6 +124,12 @@ public class MainController {
         executorService.shutdown();
     }
 
+    /**
+     * Creates a Task to perform the solving operation asynchronously.
+     *
+     * @param boardSolver The solver algorithm to use.
+     * @return A Task that performs the solving operation.
+     */
     private Task<List<Character>> getTask(BoardSolverInterface boardSolver) {
         Task<List<Character>> task = new Task<>() {
             @Override
@@ -136,6 +158,13 @@ public class MainController {
         return task;
     }
 
+    /**
+     * Creates a PauseTransition to animate the board solution process.
+     *
+     * @param result      The list of moves representing the solution.
+     * @param boardSolver The solver algorithm used to find the solution.
+     * @return A PauseTransition for animating the solution.
+     */
     private PauseTransition getTransition(List<Character> result, BoardSolverInterface boardSolver) {
         PauseTransition pause = new PauseTransition(Duration.seconds(0.8));
         pause.setOnFinished(event -> {
@@ -156,6 +185,13 @@ public class MainController {
         return pause;
     }
 
+    /**
+     * Displays an alert dialog with the specified title, header text, and content text.
+     *
+     * @param title       The title of the alert dialog.
+     * @param headerText  The header text of the alert dialog.
+     * @param contentText The content text of the alert dialog.
+     */
     private void showAlertDialog(String title, String headerText, String contentText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -164,6 +200,11 @@ public class MainController {
         alert.showAndWait();
     }
 
+    /**
+     * Enables or disables UI elements based on the provided flag.
+     *
+     * @param disabled Flag indicating whether to disable or enable UI elements.
+     */
     private void setUIElementsDisabled(boolean disabled) {
         playButton.disableProperty().unbind();
         generateButton.disableProperty().unbind();
@@ -180,6 +221,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Retrieves the solution path from the specified board solver algorithm.
+     *
+     * @param boardSolver The board solver algorithm to use.
+     * @return The list of moves representing the solution path.
+     */
     private List<Character> getResult(BoardSolverInterface boardSolver) {
         String selectedHeuristic = heuristicComboBox.getSelectionModel().getSelectedItem();
         List<Character> result = null;
@@ -190,6 +237,9 @@ public class MainController {
         return result;
     }
 
+    /**
+     * Binds the JavaFX GridPane to the current board state for display.
+     */
     private void bindGridToBoard() {
         int rows = boardWrapper.getRows();
         int columns = boardWrapper.getColumns();

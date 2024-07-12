@@ -7,7 +7,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * MainWindow is the main entry point for the JavaFX application,
+ * initializing and displaying the GUI for the 15 Puzzle Solver.
+ */
 public class MainWindow extends Application {
+    /**
+     * Starts the JavaFX application by loading the main window from FXML.
+     *
+     * @param stage The primary stage for the application.
+     * @throws IOException If an error occurs while loading the FXML file.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("main-window.fxml"));
@@ -18,6 +28,11 @@ public class MainWindow extends Application {
         stage.show();
     }
 
+    /**
+     * Main method to launch the JavaFX application.
+     *
+     * @param args Command line arguments (not used in this application).
+     */
     public static void main(String[] args) {
         launch();
     }
