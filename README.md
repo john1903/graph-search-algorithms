@@ -18,7 +18,7 @@ The 15 Puzzle, also known as the sliding puzzle, consists of a 4x4 grid with 15 
 1. Clone the repository:
    ```
    git clone https://github.com/your_username/graph-search-algorithms.git
-   cd 15-puzzle-solver
+   cd graph-search-algorithms
    ```
 2. Open the project in your preferred IDE (e.g., IntelliJ IDEA, Eclipse).
 3. Build and run the `MainWindow.java` class to start the JavaFX application.
