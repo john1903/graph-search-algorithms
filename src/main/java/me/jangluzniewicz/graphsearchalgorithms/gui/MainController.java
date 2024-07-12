@@ -84,6 +84,9 @@ public class MainController {
                 } else if (newValue.equals("A-star")) {
                     heuristicComboBox.getItems().setAll("MANH", "HAMM");
                 }
+            } else {
+                depthComboBox.getItems().clear();
+                heuristicComboBox.getItems().clear();
             }
         });
     }
