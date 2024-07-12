@@ -13,10 +13,15 @@ The 15 Puzzle, also known as the sliding puzzle, consists of a 4x4 grid with 15 
 - **Interactive GUI**: JavaFX-based graphical user interface to visualize and control the puzzle-solving algorithms.
 - **Random Board Generation**: Capability to generate random solvable 15 Puzzle boards for algorithm testing and demonstration.
 
-## Usage
-### Requirements
-- Java Development Kit (JDK) 8 or higher
-- JavaFX (included in JDK until JDK 10, separate installation required for JDK 11+)
+## How to Use
+### Setting Up the Project
+1. Clone the repository:
+   ```
+   git clone https://github.com/your_username/graph-search-algorithms.git
+   cd 15-puzzle-solver
+   ```
+2. Open the project in your preferred IDE (e.g., IntelliJ IDEA, Eclipse).
+3. Build and run the `MainWindow.java` class to start the JavaFX application.
 
 ### Example Usage
 1. Launch the application.
@@ -28,16 +33,6 @@ The 15 Puzzle, also known as the sliding puzzle, consists of a 4x4 grid with 15 
 #### Choosing Parameters
 - **BFS and DFS**: Select a move order parameter (e.g., RUDL) to specify the preferred order of moves.
 - **A-star**: Choose between "MANH" (Manhattan Distance) and "HAMM" (Hamming Distance) heuristics.
-
-## Installation and Running
-### Setting Up the Project
-1. Clone the repository:
-   ```
-   git clone https://github.com/your_username/graph-search-algorithms.git
-   cd 15-puzzle-solver
-   ```
-2. Open the project in your preferred IDE (e.g., IntelliJ IDEA, Eclipse).
-3. Build and run the `MainWindow.java` class to start the JavaFX application.
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE.txt) file for details.
