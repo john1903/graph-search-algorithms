@@ -3,6 +3,7 @@ package me.jangluzniewicz.graphsearchalgorithms.gui;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,6 +17,8 @@ import me.jangluzniewicz.graphsearchalgorithms.model.Board;
 import me.jangluzniewicz.graphsearchalgorithms.model.Node;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainController {
     private BoardWrapper boardWrapper;
@@ -38,6 +41,10 @@ public class MainController {
         boardWrapper = new BoardWrapper(board);
         bindGridToBoard();
         algorithmComboBox.getItems().addAll("BFS", "DFS", "A-star");
+        bindUIElements();
+    }
+
+    private void bindUIElements() {
         generateButton.disableProperty().bind(
                 depthComboBox.valueProperty().isNull()
         );
@@ -91,16 +98,42 @@ public class MainController {
             case "A-star" -> new SolverASTR();
             default -> null;
         };
-        List<Character> result = getResult(boardSolver);
-        if (result == null || result.isEmpty()) {
-            showAlertDialog("Solution Not Found", null,
-                    "Solution not found for the selected algorithm and heuristic.");
-            return;
-        }
-        setButtonsDisabled(true);
-        gridPane.setDisable(true);
-        PauseTransition pause = getTransition(result, boardSolver);
-        pause.play();
+
+        setUIElementsDisabled(true);
+
+        Task<List<Character>> task = getTask(boardSolver);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(task);
+        executorService.shutdown();
+    }
+
+    private Task<List<Character>> getTask(BoardSolverInterface boardSolver) {
+        Task<List<Character>> task = new Task<>() {
+            @Override
+            protected List<Character> call() {
+                return getResult(boardSolver);
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            List<Character> result = task.getValue();
+            if (result == null || result.isEmpty()) {
+                showAlertDialog("Solution Not Found", null,
+                        "Solution not found for the selected algorithm and heuristic.");
+                setUIElementsDisabled(false);
+                return;
+            }
+            gridPane.setDisable(true);
+            PauseTransition pause = getTransition(result, boardSolver);
+            pause.play();
+        });
+
+        task.setOnFailed(event -> {
+            showAlertDialog("Error", null, "An error occurred while solving the board.");
+            setUIElementsDisabled(false);
+        });
+        return task;
     }
 
     private PauseTransition getTransition(List<Character> result, BoardSolverInterface boardSolver) {
@@ -112,16 +145,8 @@ public class MainController {
                         boardWrapper.getBoard().getEmptyPosition().get(1), move);
                 pause.playFromStart();
             } else {
-                setButtonsDisabled(false);
+                setUIElementsDisabled(false);
                 gridPane.setDisable(false);
-                generateButton.disableProperty().bind(
-                        depthComboBox.valueProperty().isNull()
-                );
-                playButton.disableProperty().bind(
-                        algorithmComboBox.valueProperty().isNull()
-                                .or(heuristicComboBox.valueProperty().isNull())
-                                .or(boardWrapper.isBoardSolvedProperty())
-                );
                 if (boardSolver != null) {
                     Platform.runLater(() ->
                             showAlertDialog("Solution Found", "Statistics:", boardSolver.getStats()));
@@ -139,11 +164,20 @@ public class MainController {
         alert.showAndWait();
     }
 
-    private void setButtonsDisabled(boolean disabled) {
+    private void setUIElementsDisabled(boolean disabled) {
         playButton.disableProperty().unbind();
         generateButton.disableProperty().unbind();
+        depthComboBox.disableProperty().unbind();
+        algorithmComboBox.disableProperty().unbind();
+        heuristicComboBox.disableProperty().unbind();
         playButton.setDisable(disabled);
         generateButton.setDisable(disabled);
+        depthComboBox.setDisable(disabled);
+        algorithmComboBox.setDisable(disabled);
+        heuristicComboBox.setDisable(disabled);
+        if (!disabled) {
+            bindUIElements();
+        }
     }
 
     private List<Character> getResult(BoardSolverInterface boardSolver) {
