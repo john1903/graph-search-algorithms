@@ -34,5 +34,11 @@ The 15 Puzzle, also known as the sliding puzzle, consists of a 4x4 grid with 15 
 - **BFS and DFS**: Select a move order parameter (e.g., RUDL) to specify the preferred order of moves.
 - **A-star**: Choose between "MANH" (Manhattan Distance) and "HAMM" (Hamming Distance) heuristics.
 
+## Screenshots
+
+<img src="screenshots/graph-search-algorithms-screenshot-1.png">
+<img src="screenshots/graph-search-algorithms-screenshot-2.png">
+<img src="screenshots/graph-search-algorithms-screenshot-3.png">
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE.txt) file for details.
