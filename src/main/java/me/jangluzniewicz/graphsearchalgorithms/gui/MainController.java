@@ -74,6 +74,7 @@ public class MainController {
                 if (newValue.equals("DFS")) {
                     depthComboBox.getItems().setAll("7");
                     depthComboBox.getSelectionModel().selectFirst();
+                    getSolvedBoard();
                 } else {
                     depthComboBox.getItems().setAll("7", "12", "15", "18");
                 }
@@ -94,6 +95,24 @@ public class MainController {
     public void generateBoard() {
         int depth = Integer.parseInt(depthComboBox.getSelectionModel().getSelectedItem());
         Board board = BoardFactory.getSolvableBoard(4, 4, depth);
+        tilePropertyUpdate(board);
+    }
+
+    /**
+     * Generates a solved board and updates the board display.
+     */
+    @FXML
+    public void getSolvedBoard() {
+        Board board = BoardFactory.getSolvedBoard(4, 4);
+        tilePropertyUpdate(board);
+    }
+
+    /**
+     * Updates the tile properties of the board based on the specified board.
+     *
+     * @param board The board to update the tile properties.
+     */
+    private void tilePropertyUpdate(Board board) {
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getColumns(); j++) {
                 boardWrapper.tileProperty(i, j).set(board.getFieldValue(i, j));
