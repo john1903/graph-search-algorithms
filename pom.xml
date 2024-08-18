@@ -6,7 +6,7 @@
 
     <groupId>me.jangluzniewicz</groupId>
     <artifactId>graph-search-algorithms</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>graph-search-algorithms</name>
 
     <properties>
