@@ -41,4 +41,4 @@ The 15 Puzzle, also known as the sliding puzzle, consists of a 4x4 grid with 15 
 <img src="screenshots/graph-search-algorithms-screenshot-3.png">
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE.txt) file for details.
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE.txt) file for details.
